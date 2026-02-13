@@ -1,6 +1,7 @@
 import { IsEmail, IsOptional, IsString, MinLength } from "class-validator";
 
-export class UpdateUserDto {    
+export class UpdateUserDto {
+
     @IsOptional()
     @IsEmail({}, { message: 'You need to provide a valid email address!' })
     email?: string;

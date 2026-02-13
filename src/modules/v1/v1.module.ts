@@ -2,9 +2,10 @@ import { Module } from '@nestjs/common';
 import { AuthModule } from './auth/auth.module';
 import { UsersModule } from './users/users.module';
 import { RouterModule } from '@nestjs/core';
+import { WorkoutModule } from './workout/workout.module';
 
 @Module({
-  imports: [AuthModule, UsersModule,
+  imports: [AuthModule, UsersModule, WorkoutModule,
     RouterModule.register([
       {
         path: '',
@@ -16,6 +17,10 @@ import { RouterModule } from '@nestjs/core';
           {
             path: 'users',
             module: UsersModule,
+          },
+          {
+            path: 'workout',
+            module: WorkoutModule,
           }
         ]
       }
