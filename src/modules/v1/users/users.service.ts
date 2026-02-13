@@ -16,6 +16,9 @@ export class UsersService {
     ) { }
 
     async updateUser(id: string, dto: UpdateUserDto) {
+
+        const updateData: any = { ...dto };
+
         if (dto.email) {
             // Checking if a user with the same email already exists
             const emailExists = await this.usersRepository.findOne(
@@ -29,19 +32,16 @@ export class UsersService {
             if (emailExists) throw new
                 ConflictException('This email is already taken by another user!');
         }
-        let hashedPassword;
+
         if (dto.password) {
             // Hashing the password before saving it to the database
-            hashedPassword = await bcrypt.hash(dto.password, 10);
+            updateData.password = await bcrypt.hash(dto.password, 10);
+        } else {
+            delete updateData.password;
         }
 
-        const user = this.usersRepository.create({
-            ...dto,
-            password: hashedPassword,
-        });
 
-
-        await this.usersRepository.update(id, user)
+        await this.usersRepository.update(id, updateData)
         return { message: 'User updated successfully!' };
     }
 

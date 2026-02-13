@@ -1,15 +1,18 @@
-import { Injectable, ConflictException, Module } from '@nestjs/common';
+import { Injectable, ConflictException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
 import { User } from '../users/entities/user.entity';
 import { RegisterDto } from './dto/register.dto';
+import { JwtService } from '@nestjs/jwt';
+import { LoginDto } from './dto/login.dto';
 
 @Injectable()
 export class AuthService {
   constructor(
     @InjectRepository(User)
     private usersRepository: Repository<User>,
+    private readonly jwtService: JwtService,
   ) { }
 
   async register(dto: RegisterDto) {
@@ -32,5 +35,23 @@ export class AuthService {
 
     delete user.password;
     return user;
+  }
+
+  async login(dto: LoginDto) {
+    const user = await this.usersRepository.findOne({
+      select: ['id', 'email', 'fullName', 'password'],
+      where: { email: dto.email }
+    });
+
+    if (!user) throw new ConflictException('Invalid email or password!');
+    const isPasswordValid = await bcrypt.compare(dto.password, user.password);
+    if (!isPasswordValid) throw new ConflictException('Invalid email or password!');
+
+    const payload = { sub: user.id, email: user.email };
+
+    return {
+      message: 'Login successful!',
+      access_token: await this.jwtService.signAsync(payload),
+    };
   }
 }

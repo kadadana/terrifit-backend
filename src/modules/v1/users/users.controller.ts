@@ -6,9 +6,12 @@ import {
     Param,
     Get
 } from '@nestjs/common';
+import { UseGuards } from '@nestjs/common';
 import { UsersService } from './users.service';
 import { UpdateUserDto } from './dto/update.user.dto';
+import { AuthGuard } from '../auth/guards/auth.guard';
 
+@UseGuards(AuthGuard)
 @Controller()
 export class UsersController {
     constructor(private readonly usersService: UsersService) { }
