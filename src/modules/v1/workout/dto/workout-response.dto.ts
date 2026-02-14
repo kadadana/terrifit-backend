@@ -1,4 +1,4 @@
-import { Exclude, Expose } from 'class-transformer';
+import { Expose } from 'class-transformer';
 
 export class WorkoutResponseDto {
   @Expose()
@@ -27,6 +27,7 @@ export class WorkoutResponseDto {
 
   @Expose()
   sortOrder: number;
+  
   constructor(partial: Partial<WorkoutResponseDto>) {
     Object.assign(this, partial);
   }

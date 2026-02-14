@@ -6,8 +6,8 @@ export class CreateWorkoutDto {
     @IsNotEmpty({ message: 'Workout ID is required!' })
     id: string;
 
-    @IsOptional()
     @IsString()
+    @IsNotEmpty({ message: 'Program ID is required!' })
     programId?: string;
 
     @IsOptional()

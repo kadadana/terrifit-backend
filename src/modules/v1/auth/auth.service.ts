@@ -2,7 +2,7 @@ import { Injectable, ConflictException } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 import * as bcrypt from 'bcrypt';
-import { User } from '../users/entities/user.entity';
+import { User } from '../user/entities/user.entity';
 import { RegisterDto } from './dto/register.dto';
 import { JwtService } from '@nestjs/jwt';
 import { LoginDto } from './dto/login.dto';
@@ -39,7 +39,7 @@ export class AuthService {
 
   async login(dto: LoginDto) {
     const user = await this.usersRepository.findOne({
-      select: ['id', 'email', 'fullName', 'password'],
+      select: ['id', 'email', 'fullName', 'password', 'role'],
       where: { email: dto.email }
     });
 
@@ -47,7 +47,7 @@ export class AuthService {
     const isPasswordValid = await bcrypt.compare(dto.password, user.password);
     if (!isPasswordValid) throw new ConflictException('Invalid email or password!');
 
-    const payload = { sub: user.id, email: user.email };
+    const payload = { sub: user.id, email: user.email, role: user.role };
 
     return {
       message: 'Login successful!',

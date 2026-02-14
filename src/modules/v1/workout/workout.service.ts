@@ -54,16 +54,16 @@ export class WorkoutService {
         return { message: 'Workout updated successfully!' };
     }
 
-    async getWorkoutById(id: string): Promise<Array<WorkoutResponseDto>> {
+    async getWorkoutById(id: string): Promise<WorkoutResponseDto> {
         if (!isUUID(id, '4')) {
             throw new BadRequestException('Invalid workout ID format!');
         }
-        const user = await this.workoutRepository.find({
+        const user = await this.workoutRepository.findOne({
             where:
                 { id: id }
         });
 
-        if (!user || user.length === 0) {
+        if (!user) {
             throw new NotFoundException('Workout not found!');
         }
 

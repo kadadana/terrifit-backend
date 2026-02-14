@@ -46,6 +46,22 @@ export class UsersService {
     }
 
     async getById(id: string): Promise<UserResponseDto> {
+        const user = await this.usersRepository.findOne(
+            {
+                where: { id },
+                select: ['id', 'fullName']
+            });
+
+        if (!user) {
+            throw new NotFoundException('User not found!');
+        }
+
+        return plainToInstance(UserResponseDto, user, {
+            excludeExtraneousValues: true,
+        });
+    }
+
+    async getFullInfoById(id: string): Promise<UserResponseDto> {
         const user = await this.usersRepository.findOne({ where: { id } });
 
         if (!user) {
