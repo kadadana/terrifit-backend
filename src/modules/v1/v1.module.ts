@@ -5,6 +5,7 @@ import { RouterModule } from '@nestjs/core';
 import { WorkoutModule } from './workout/workout.module';
 import { ProgramModule } from './program/program.module';
 import { ExerciseModule } from './exercise/exercise.module';
+import { RelationshipModule } from './relationship/relationship.module';
 
 @Module({
   imports:
@@ -14,6 +15,7 @@ import { ExerciseModule } from './exercise/exercise.module';
       WorkoutModule,
       ProgramModule,
       ExerciseModule,
+      RelationshipModule,
       RouterModule.register([
         {
           path: '',
@@ -37,6 +39,10 @@ import { ExerciseModule } from './exercise/exercise.module';
             {
               path: 'exercises',
               module: ExerciseModule,
+            },
+            {
+              path: 'relationships',
+              module: RelationshipModule,
             }
           ]
         }

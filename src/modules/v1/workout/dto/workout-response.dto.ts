@@ -27,7 +27,7 @@ export class WorkoutResponseDto {
 
   @Expose()
   sortOrder: number;
-  
+
   constructor(partial: Partial<WorkoutResponseDto>) {
     Object.assign(this, partial);
   }

@@ -16,10 +16,10 @@ export class WorkoutService {
     ) { }
 
     async createWorkout(dto: CreateWorkoutDto) {
-        const workout = this.workoutRepository.create(dto);
+        const workoutInstance = this.workoutRepository.create(dto);
+        const savedWorkout = await this.workoutRepository.save(workoutInstance);
 
-        await this.workoutRepository.save(workout);
-        return plainToInstance(CreateWorkoutDto, workout, {
+        return plainToInstance(WorkoutResponseDto, savedWorkout, {
             excludeExtraneousValues: true,
         });
     }
