@@ -1,10 +1,8 @@
-import { IsBoolean, IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-validator';
+import { IsArray, IsBoolean, IsNotEmpty, IsOptional, IsString, IsUUID, ValidateNested } from 'class-validator';
+import { CreateWorkoutDto } from '../../workout/dto/create-workout.dto';
+import { Type } from 'class-transformer';
 
 export class CreateProgramDto {
-
-    @IsUUID('4', { message: 'Invalid program ID format!' })
-    @IsNotEmpty({ message: 'Program ID is required!' })
-    id: string;
 
     @IsString()
     @IsNotEmpty({ message: 'Program name is required!' })
@@ -21,5 +19,10 @@ export class CreateProgramDto {
     @IsOptional()
     @IsBoolean()
     isPublic?: boolean;
+
+    @IsArray()
+    @ValidateNested({ each: true })
+    @Type(() => CreateWorkoutDto)
+    workouts: CreateWorkoutDto[];
 
 }

@@ -1,6 +1,7 @@
-import { Entity, Column, PrimaryGeneratedColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, ManyToOne, JoinColumn } from 'typeorm';
+import { Program } from '../../program/entities/program.entity';
 
-@Entity('workout')
+@Entity('workouts')
 export class Workout {
 
   @PrimaryGeneratedColumn('uuid')
@@ -29,5 +30,9 @@ export class Workout {
 
   @Column()
   sortOrder: number;
+
+  @ManyToOne(() => Program, program => program.workouts, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'programId' })
+  program: Program;
 
 }

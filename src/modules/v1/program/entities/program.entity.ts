@@ -1,4 +1,5 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
+import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn, OneToMany } from 'typeorm';
+import { Workout } from '../../workout/entities/workout.entity';
 
 @Entity('programs')
 export class Program {
@@ -19,5 +20,8 @@ export class Program {
 
     @CreateDateColumn()
     createdAt: Date;
+
+    @OneToMany(() => Workout, workout => workout.programId, { cascade: true })
+    workouts: Workout[];
     
 }

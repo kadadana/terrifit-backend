@@ -1,4 +1,4 @@
-import { BadRequestException, ConflictException, Injectable, NotFoundException } from "@nestjs/common";
+import { BadRequestException, Injectable, NotFoundException } from "@nestjs/common";
 import { InjectRepository } from "@nestjs/typeorm";
 import { Repository } from "typeorm";
 import { Program } from "./entities/program.entity";
@@ -16,23 +16,16 @@ export class ProgramService {
     ) { }
 
     async createProgram(currentUser: any, dto: CreateProgramDto) {
-        const program = this.programRepository.create(dto);
+        const program = this.programRepository.create(
+            { ...dto, ownerId: currentUser.sub });
 
-        if (dto.id) {
-            const existingProgram = await this.programRepository.findOne(
-                { where: { id: dto.id, ownerId: currentUser.sub } }
-            );
-            if (existingProgram) {
-                throw new ConflictException('Program with the same ID already exists!');
-            }
-        }
-
-        await this.programRepository.save(program);
-        return { message: 'Program created successfully!' };
+        const savedProgram = await this.programRepository.save(program);
+        return plainToInstance(ProgramResponseDto, savedProgram, {
+            excludeExtraneousValues: true,
+        });
     }
 
     async updateProgram(id: string, dto: UpdateProgramDto) {
-
         const updateData: any = { ...dto };
 
         await this.programRepository.update(
@@ -77,7 +70,6 @@ export class ProgramService {
             excludeExtraneousValues: true,
         });
     }
-
 
     async getAllPrograms(): Promise<Array<ProgramResponseDto>> {
         const programs = await this.programRepository.find();

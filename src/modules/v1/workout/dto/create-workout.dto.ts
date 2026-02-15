@@ -2,10 +2,6 @@ import { IsNumber, IsNotEmpty, IsOptional, IsString, IsUUID } from 'class-valida
 
 export class CreateWorkoutDto {
 
-    @IsUUID('4', { message: 'Invalid workout ID format!' })
-    @IsNotEmpty({ message: 'Workout ID is required!' })
-    id: string;
-
     @IsString()
     @IsNotEmpty({ message: 'Program ID is required!' })
     programId?: string;
