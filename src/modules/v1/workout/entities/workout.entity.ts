@@ -4,10 +4,14 @@ import { Program } from '../../program/entities/program.entity';
 @Entity('workouts')
 export class Workout {
 
+  @ManyToOne(() => Program, program => program.workouts, { onDelete: 'CASCADE' })
+  @JoinColumn({ name: 'programId' })
+  program: Program;
+
   @PrimaryGeneratedColumn('uuid')
   id: string;
 
-  @Column()
+  @Column({ type: 'uuid' })
   programId: string;
 
   @Column()
@@ -31,8 +35,6 @@ export class Workout {
   @Column()
   sortOrder: number;
 
-  @ManyToOne(() => Program, program => program.workouts, { onDelete: 'CASCADE' })
-  @JoinColumn({ name: 'programId' })
-  program: Program;
+
 
 }

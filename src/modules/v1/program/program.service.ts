@@ -19,6 +19,13 @@ export class ProgramService {
         const program = this.programRepository.create(
             { ...dto, ownerId: currentUser.sub });
 
+
+        if (program.workouts) {
+            program.workouts = program.workouts.map(workout => ({
+                ...workout,
+                program: program
+            }));
+        }
         const savedProgram = await this.programRepository.save(program);
         return plainToInstance(ProgramResponseDto, savedProgram, {
             excludeExtraneousValues: true,
