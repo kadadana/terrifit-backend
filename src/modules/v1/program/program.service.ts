@@ -45,7 +45,8 @@ export class ProgramService {
         if (!isUUID(id, '4')) {
             throw new BadRequestException('Invalid program ID format!');
         }
-        const program = await this.programRepository.findOne({ where: { id: id } });
+        const program = await this.programRepository.findOne(
+            { where: { id: id } });
 
         if (!program) {
             throw new NotFoundException('Program not found!');
@@ -80,9 +81,10 @@ export class ProgramService {
 
     async getAllPrograms(): Promise<Array<ProgramResponseDto>> {
         const programs = await this.programRepository.find();
-        return programs.map(program => plainToInstance(ProgramResponseDto, program, {
-            excludeExtraneousValues: true
-        }));
+        return programs.map(program =>
+            plainToInstance(ProgramResponseDto, program, {
+                excludeExtraneousValues: true
+            }));
     }
 
 }

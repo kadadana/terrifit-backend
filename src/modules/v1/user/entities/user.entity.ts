@@ -1,5 +1,12 @@
-import { Entity, Column, PrimaryGeneratedColumn, CreateDateColumn } from 'typeorm';
+import {
+  OneToOne,
+  Entity,
+  Column,
+  PrimaryGeneratedColumn,
+  CreateDateColumn
+} from 'typeorm';
 import { Role } from '@/common/enums/role.enum';
+import { Profile } from '../../profile/entities/profile.entity';
 
 @Entity('users')
 export class User {
@@ -20,4 +27,7 @@ export class User {
 
   @Column({ type: 'enum', enum: Role, default: Role.USER })
   role: Role;
+
+  @OneToOne(() => Profile, (profile) => profile.user)
+  profile: Profile;
 }

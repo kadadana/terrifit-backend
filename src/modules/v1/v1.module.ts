@@ -6,6 +6,7 @@ import { WorkoutModule } from './workout/workout.module';
 import { ProgramModule } from './program/program.module';
 import { ExerciseModule } from './exercise/exercise.module';
 import { RelationshipModule } from './relationship/relationship.module';
+import { ProfileModule } from './profile/profile.module';
 
 @Module({
   imports:
@@ -16,6 +17,7 @@ import { RelationshipModule } from './relationship/relationship.module';
       ProgramModule,
       ExerciseModule,
       RelationshipModule,
+      ProfileModule,
       RouterModule.register([
         {
           path: '',
@@ -43,6 +45,10 @@ import { RelationshipModule } from './relationship/relationship.module';
             {
               path: 'relationships',
               module: RelationshipModule,
+            },
+            {
+              path: 'profiles',
+              module: ProfileModule,
             }
           ]
         }
